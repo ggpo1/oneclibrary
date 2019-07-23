@@ -13,14 +13,16 @@ namespace OneCLibrary.Services
 {
     public class OneCService
     {
-        private readonly OneСServer server;
-        public OneСServer Server => server;
+        private OneСServer server;
 
+        public OneСServer Server { get => server; set => server = value; }
 
         public OneCService(OneСServer server)
         {
-            this.server = server ?? throw new ArgumentNullException(nameof(server)); 
+            this.Server = server ?? throw new ArgumentNullException(nameof(server)); 
         }
+
+
 
         #region методы для получения дданных из 1С
         /// <summary>
@@ -66,6 +68,11 @@ namespace OneCLibrary.Services
 
             return entCollection;
         }
+        /// <summary>
+        /// Method helps to get a collection of server entity columns by entity
+        /// </summary>
+        /// <param name="oneCEntity"></param>
+        /// <returns></returns>
         public OneCEntityColumnsCollection GetServerEntitiesColumns(OneCEntity oneCEntity)
         {
 
@@ -88,10 +95,29 @@ namespace OneCLibrary.Services
             return FromJson(text);
             // return columnsList;
         }
-        #endregion
-        #region метода для отправки данных в 1С
+        //TODO method for getting rows by entity and columns
+        public Dictionary<string, string> GetEntityRows(OneCEntity entity, List<OneCEntityColumn> columns)
+        {
+            Dictionary<string, string> entityRows = new Dictionary<string, string>() { };
+            foreach (OneCEntityColumn column in columns)
+            {
+                string value = "";
+
+                entityRows.Add(column.ColumnName, value);
+            }
+            return entityRows;
+        }
 
         #endregion
+
+
+
+        #region методы для отправки данных в 1С
+
+        #endregion
+
+
+
         #region вспомогательные методы для работы с 1С
         private OneCEntityColumnsCollection FromJson(string str)
         {
@@ -177,21 +203,7 @@ namespace OneCLibrary.Services
             return collection;
         }
         /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="entityName"></param>
-        /// <returns></returns>
-        public string GetEntityType(string entityName)
-        {
-            string type = "";
-            if (entityName.Contains("Catalog"))
-                type = "Catalog";
-            
-            return null;
-        }
-
-        /// <summary>
-        /// 
+        /// Helps to get BaseUrl
         /// </summary>
         /// <param name="hasPort"></param>
         /// <returns></returns>
