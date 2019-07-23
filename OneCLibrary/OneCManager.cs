@@ -2,7 +2,7 @@
 
 namespace OneCLibrary
 {
-    public class Class1
+    public class OneCManager
     {
     }
 }
